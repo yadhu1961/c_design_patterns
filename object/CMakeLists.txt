@@ -9,5 +9,5 @@ project(object_pattern
     C
 )
 
-add_executable(object_pattern main.c circle.c)
+add_executable(object_pattern.out main.c circle.c)
 

@@ -9,5 +9,5 @@ project(opaque_pattern
     C
 )
 
-add_executable(opaque_pattern main.c circle.c)
+add_executable(opaque_pattern.out main.c circle.c)
 

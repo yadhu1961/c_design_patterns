@@ -10,7 +10,7 @@ project(c_design_patterns
 )
 
 add_subdirectory(object)
-# add_subdirectory(pimpl)
-# add_subdirectory(PolicyBasedStrategyPattern)
+add_subdirectory(opaque)
+add_subdirectory(singleton)
 # add_subdirectory(strategy_pattern)
 
