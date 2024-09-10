@@ -2,14 +2,19 @@
 
 #define LOGGER_BUFFER_SIZE 50
 
-struct logger_t
-{
-  // Logger name maximum of 20 characters
-  char name[LOGGER_BUFFER_SIZE];
-};
+/**
+ * Logger is implemented as combination of opaque pattern and singleton pattern
+ * Logger can be instantiatiated only by one thread at a time. first to call get_logger, creates the logger
+ * It cannot be instatiated directly due to opaqueness, caller needs to instantiate using thread safe get_logger API
+ */
 
-// creates the logger if not created otherwise returns the pointer
-struct logger_t* get_logger(const unsigned long thread_id);
+/**
+ * thread safe function to create the logger, if created
+ * creates the logger if not created otherwise returns the pointer.
+ */
+int get_logger(const uint8_t thread_id);
 
-// prints the log message
+/**
+ *  prints the log message returns 0 if successful, -1 if logging failed
+ */
 int print(const char* log_message);

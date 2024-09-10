@@ -1,18 +1,15 @@
-#include <pthread.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
+#include <limits.h>    // for limits of uint8 type
+#include <pthread.h>   // for pthread functionality
+#include <stdint.h>    // for uint8_t
+#include <stdio.h>     // for printf/snprintf
+#include <stdlib.h>    // for srand
+#include <unistd.h>    // for sleep
 #include "logger.h"
 
-#define LOG(msg, thread_id)                      \
-  {                                              \
-    char result[LOGGER_BUFFER_SIZE];             \
-    strcpy(result, get_logger(thread_id)->name); \
-    strcat(result, msg);                         \
-    print(result);                               \
+#define LOG(msg, thread_id) \
+  {                         \
+    get_logger(thread_id);  \
+    print(msg);             \
   }
 
 void* thread_func(void* arg)
@@ -23,13 +20,13 @@ void* thread_func(void* arg)
 
   {
     // To randomize which thread creates the logger
-    uint8_t r = rand() & 0xFF;   // number ranging from 0 to 255
+    uint8_t r = rand() & UCHAR_MAX;   // number ranging from 0 to 255
     usleep(r);
   }
 
-  for (uint8_t count = 0; count < 10; ++count)   // Sleep 10 times for random number of micro seconds
+  for (uint8_t count = 0; count < 5; ++count)   // Sleep 10 times for random number of micro seconds
   {
-    uint8_t r = rand() & 0xFF;   // number ranging from 0 to 255
+    uint8_t r = rand() & UCHAR_MAX;   // number ranging from 0 to 255
     usleep(r);
     sprintf(log_message, "thread %u, random number %u", thread_id, r);
     LOG(log_message, thread_id);
@@ -45,10 +42,10 @@ int main()
   uint8_t   thread_ids[2] = {0, 1};
 
   // uncommenting this line should cause assertion
-  // print("test for assertion");
+  print("test for assertion");
 
   // Creating a new threads
-  pthread_create(&ptid_0, NULL, &thread_func, &thread_ids);
+  pthread_create(&ptid_0, NULL, &thread_func, &thread_ids[0]);
   // Creating a new thread
   pthread_create(&ptid_1, NULL, &thread_func, &thread_ids[1]);
   // printf(
